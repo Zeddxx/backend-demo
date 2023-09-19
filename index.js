@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoute = require('./routes/auth')
-
+const postRoute = require('./routes/posts')
 dotenv.config()
 
 // database configuration
@@ -22,9 +22,11 @@ const corsOptions = {
     credentials: true,
     method: ["post", "put", "delete", "get"],
 }
+
+// Middlewares
 app.use(express.json())
 app.use("/api/auth", authRoute)
-
+app.use("/api/posts", postRoute)
 
 app.listen(process.env.PORT, () => {
     connectDB()
