@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
     console.log(token);
 
     if(!token){
-        return res.status.(401).json("You are not authorized to access this")
+        return res.status(401).json("You are not authorized to access this")
     }
     jwt.verify(token, process.env.SECRET, async(error, data) => {
         if(error){
