@@ -3,9 +3,10 @@ const router = express.Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const Post = require('../models/Post')
+const verifyToken = require('../verifyToken')
 
 // Create a new post
-router.post('/create', async(req, res) => {
+router.post('/create',verifyToken, async(req, res) => {
     try {
         const newPost = new Post(req.body)
         const savedPost = await newPost.save()
@@ -17,7 +18,7 @@ router.post('/create', async(req, res) => {
 
 // Update the post
 
-router.put('/:id', async(res, req) => {
+router.put('/:id',verifyToken, async(res, req) => {
     try {
         const updatePost = await Post.findByIdAndUpdate(req.params.id, {$set:req.body}, {new: true})
         res.status(200).json(updatedPost)
@@ -27,7 +28,7 @@ router.put('/:id', async(res, req) => {
 })
 
 // Delete the post
-router.delete('/:id', async(req, res) => {
+router.delete('/:id',verifyToken, async(req, res) => {
     try {
         await Post.findByIdAndDelete(req.params.id)
         await Comment.deleteMany({postId:req.params.id})
@@ -40,7 +41,7 @@ router.delete('/:id', async(req, res) => {
 // Get searched posts
 router.get('/', async(req, res) => {
     const query = req.query
-    console.log(query);
+    // console.log(query);
     try {
         const searchFilter = {
             title: {$regex: query.search, $options: "i"}

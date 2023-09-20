@@ -39,7 +39,7 @@ router.get('/:id', async(req, res) => {
         const {password, ...info} = user._doc
         res.status(200).json(info)
     } catch (error) {
-        res.status(500).json("Error occurred while getting user profile", error)
+        res.status(500).json(error)
     }
 })
 
