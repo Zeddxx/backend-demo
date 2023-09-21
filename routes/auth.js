@@ -54,7 +54,7 @@ router.get("/logout", async (req, res) => {
 })
 
 // refetch user profile
-router.get("/refetch",verifyToken, (req, res) => {
+router.get("/refetch", (req, res) => {
     const token = req.cookies.token
     jwt.verify(token,process.env.SECRET, {}, async (err, data) => {
         if(err){

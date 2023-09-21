@@ -21,7 +21,7 @@ router.post("/create",async (req,res)=>{
 })
 
 //UPDATE
-router.put("/:id",verifyToken,async (req,res)=>{
+router.put("/:id",async (req,res)=>{
     try{
        
         const updatedComment=await Comment.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
@@ -35,7 +35,7 @@ router.put("/:id",verifyToken,async (req,res)=>{
 
 
 //DELETE
-router.delete("/:id",verifyToken,async (req,res)=>{
+router.delete("/:id",async (req,res)=>{
     try{
         await Comment.findByIdAndDelete(req.params.id)
         
