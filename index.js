@@ -23,37 +23,39 @@ const connectDB = async () => {
     }
 }
 
-const corsOptions = {
-    // origin: process.env.CLIENT_URL,
-    origin: "http://localhost:5173",
-    credentials: true,
-    method: ["post", "put", "delete", "get"],
-}
-console.log(corsOptions);
+// const corsOptions = {
+//     // origin: process.env.CLIENT_URL,
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//     method: ["post", "put", "delete", "get"],
+// }
+// console.log(corsOptions);
 // Middlewares
 dotenv.config()
 app.use(express.json())
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 app.use("/images", express.static(path.join(__dirname, "/images")) )
+app.use(cors({origin:"http://localhost:5173", credentials:true}))
 app.use(cookieParser())
 app.use("/api/auth", authRoute)
+app.use("/api/users", userRoute)
 app.use("/api/posts", postRoute)
-app.use("/api/users", verifyToken, userRoute)
-app.use("/api/comments",verifyToken, commentRoute)
+app.use("/api/comments", commentRoute)
 
-// Image upload
-const storage = multer.diskStorage({
-    destination: (req, file, fn) => {
-        fn(null, "images")
+const storage=multer.diskStorage({
+    destination:(req,file,fn)=>{
+        fn(null,"images")
     },
-    filename: (req, file, fn) => {
-        fn(null, req.body.img)
+    filename:(req,file,fn)=>{
+        fn(null,req.body.img)
+        // fn(null,"image1.jpg")
     }
 })
-const upload = multer({storage:storage})
-app.post("/api/upload", upload.single("file"), (req, res) => {
-    console.log(req.body);
-    res.status(200).json("Image Uploaded Successfully!")
+
+const upload=multer({storage:storage})
+app.post("/api/upload",upload.single("file"),(req,res)=>{
+    // console.log(req.body)
+    res.status(200).json("Image has been uploaded successfully!")
 })
 
 app.listen(process.env.PORT, () => {

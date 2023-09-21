@@ -10,8 +10,7 @@ const commentSchema = new mongoose.Schema({
         required: true,
     },
     postId: {
-        type:String,
-        unique: true,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
     userId: {
@@ -20,4 +19,5 @@ const commentSchema = new mongoose.Schema({
     }
 }, {timestamps:true})
 
+commentSchema.index({ postId: 1 }, { unique: false })
 module.exports = mongoose.model("Comment", commentSchema)
