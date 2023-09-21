@@ -3,6 +3,7 @@ const router  = express.Router()
 const User    = require('../models/User')
 const bcrypt  = require('bcrypt')
 const jwt     = require('jsonwebtoken')
+const verifyToken = require('../verifyToken')
 
 
 // User Registration
@@ -53,7 +54,7 @@ router.get("/logout", async (req, res) => {
 })
 
 // refetch user profile
-router.get("/refetch", (req, res) => {
+router.get("/refetch",verifyToken, (req, res) => {
     const token = req.cookies.token
     jwt.verify(token,process.env.SECRET, {}, async (err, data) => {
         if(err){
